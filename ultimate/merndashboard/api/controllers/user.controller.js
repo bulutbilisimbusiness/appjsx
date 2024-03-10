@@ -3,7 +3,7 @@ import { errorHandler } from "../utils/error.js";
 import User from "../models/user.model.js";
 
 export const test = (req, res) => {
-	res.json({ message: "API is working?" });
+	res.json({ message: "API is working!" });
 };
 
 export const updateUser = async (req, res, next) => {
@@ -47,12 +47,13 @@ export const updateUser = async (req, res, next) => {
 			},
 			{ new: true }
 		);
-		const { password: _password, ...rest } = updatedUser._doc;
+		const { password, ...rest } = updatedUser._doc;
 		res.status(200).json(rest);
 	} catch (error) {
 		next(error);
 	}
 };
+
 export const deleteUser = async (req, res, next) => {
 	if (!req.user.isAdmin && req.user.id !== req.params.userId) {
 		return next(errorHandler(403, "You are not allowed to delete this user"));
@@ -64,6 +65,7 @@ export const deleteUser = async (req, res, next) => {
 		next(error);
 	}
 };
+
 export const signout = (req, res, next) => {
 	try {
 		res
@@ -74,6 +76,7 @@ export const signout = (req, res, next) => {
 		next(error);
 	}
 };
+
 export const getUsers = async (req, res, next) => {
 	if (!req.user.isAdmin) {
 		return next(errorHandler(403, "You are not allowed to see all users"));
@@ -115,13 +118,14 @@ export const getUsers = async (req, res, next) => {
 		next(error);
 	}
 };
+
 export const getUser = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.params.userId);
-		if(!user){
-			return next(errorHandler(404,"User not found"))
+		if (!user) {
+			return next(errorHandler(404, "User not found"));
 		}
-		const { password: _password, ...rest } = user._doc;
+		const { password, ...rest } = user._doc;
 		res.status(200).json(rest);
 	} catch (error) {
 		next(error);

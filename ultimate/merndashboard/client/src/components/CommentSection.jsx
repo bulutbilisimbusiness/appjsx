@@ -1,15 +1,15 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
+import { Alert, Button, Modal, Textarea } from "flowbite-react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert, Button, Modal, Textarea } from "flowbite-react";
-import { useState, useEffect } from "react";
 import Comment from "./Comment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+
 export default function CommentSection({ postId }) {
 	const { currentUser } = useSelector((state) => state.user);
 	const [comment, setComment] = useState("");
-	const [comments, setComments] = useState([]);
 	const [commentError, setCommentError] = useState(null);
+	const [comments, setComments] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [commentToDelete, setCommentToDelete] = useState(null);
 	const navigate = useNavigate();
@@ -40,6 +40,7 @@ export default function CommentSection({ postId }) {
 			setCommentError(error.message);
 		}
 	};
+
 	useEffect(() => {
 		const getComments = async () => {
 			try {
@@ -54,6 +55,7 @@ export default function CommentSection({ postId }) {
 		};
 		getComments();
 	}, [postId]);
+
 	const handleLike = async (commentId) => {
 		try {
 			if (!currentUser) {
@@ -72,6 +74,7 @@ export default function CommentSection({ postId }) {
 									...comment,
 									likes: data.likes,
 									numberOfLikes: data.likes.length,
+									// eslint-disable-next-line no-mixed-spaces-and-tabs
 							  }
 							: comment
 					)
@@ -81,6 +84,7 @@ export default function CommentSection({ postId }) {
 			console.log(error.message);
 		}
 	};
+
 	const handleEdit = async (comment, editedContent) => {
 		setComments(
 			comments.map((c) =>
@@ -88,6 +92,7 @@ export default function CommentSection({ postId }) {
 			)
 		);
 	};
+
 	const handleDelete = async (commentId) => {
 		setShowModal(false);
 		try {
@@ -101,7 +106,6 @@ export default function CommentSection({ postId }) {
 			if (res.ok) {
 				// eslint-disable-next-line no-unused-vars
 				const data = await res.json();
-
 				setComments(comments.filter((comment) => comment._id !== commentId));
 			}
 		} catch (error) {
@@ -116,10 +120,11 @@ export default function CommentSection({ postId }) {
 					<img
 						className="h-5 w-5 object-cover rounded-full"
 						src={currentUser.profilePicture}
+						alt=""
 					/>
 					<Link
 						to={"/dashboard?tab=profile"}
-						className="text-sm text-cyan-500 hover:underline"
+						className="text-xs text-cyan-600 hover:underline"
 					>
 						@{currentUser.username}
 					</Link>
@@ -145,7 +150,7 @@ export default function CommentSection({ postId }) {
 						value={comment}
 					/>
 					<div className="flex justify-between items-center mt-5">
-						<p className="text-gray-500 text-sm">
+						<p className="text-gray-500 text-xs">
 							{200 - comment.length} characters remaining
 						</p>
 						<Button outline gradientDuoTone="purpleToBlue" type="submit">
@@ -160,10 +165,10 @@ export default function CommentSection({ postId }) {
 				</form>
 			)}
 			{comments.length === 0 ? (
-				<p className="text-sm my-5">No comments yet</p>
+				<p className="text-sm my-5">No comments yet!</p>
 			) : (
 				<>
-					<div className="text-sm  my-5 flex items-center gap-1">
+					<div className="text-sm my-5 flex items-center gap-1">
 						<p>Comments</p>
 						<div className="border border-gray-400 py-1 px-2 rounded-sm">
 							<p>{comments.length}</p>
@@ -175,7 +180,7 @@ export default function CommentSection({ postId }) {
 							comment={comment}
 							onLike={handleLike}
 							onEdit={handleEdit}
-							onDlete={(commentId) => {
+							onDelete={(commentId) => {
 								setShowModal(true);
 								setCommentToDelete(commentId);
 							}}

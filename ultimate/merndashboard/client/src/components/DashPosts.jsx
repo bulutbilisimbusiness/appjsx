@@ -27,6 +27,7 @@ export default function DashPosts() {
 		if (currentUser.isAdmin) {
 			fetchPosts();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentUser._id]);
 	const handleShowMore = async () => {
 		const startIndex = userPosts.length;
