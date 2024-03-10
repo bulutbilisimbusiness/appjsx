@@ -40,10 +40,11 @@ export const likeComment = async (req, res, next) => {
 		if (!comment) {
 			return next(errorHandler(404, "Comment not found"));
 		}
-		const userIndex = comment.likes.indexOf(req.user.id);
+		const userId = req.user.id;
+		const userIndex = comment.likes.indexOf(userId);
 		if (userIndex === -1) {
 			comment.numberOfLikes += 1;
-			comment.likes.push(req.user.id);
+			comment.likes.push(userId);
 		} else {
 			comment.numberOfLikes -= 1;
 			comment.likes.splice(userIndex, 1);
@@ -61,7 +62,7 @@ export const editComment = async (req, res, next) => {
 		if (!comment) {
 			return next(errorHandler(404, "Comment not found"));
 		}
-		if (comment.userId !== req.user.id && !req.user.isAdmin) {
+		if (comment.userId.toString() !== req.user.id && !req.user.isAdmin) {
 			return next(
 				errorHandler(403, "You are not allowed to edit this comment")
 			);
