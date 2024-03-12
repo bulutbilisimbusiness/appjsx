@@ -2,6 +2,7 @@
 /* eslint-disable */
 const tailwindScrollbar = require("tailwind-scrollbar");
 const flowbitePlugin = require("flowbite/plugin");
+
 export default {
 	darkMode: "class",
 	content: [
