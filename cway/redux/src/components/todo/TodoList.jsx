@@ -1,6 +1,7 @@
 import TodoItem from "./TodoItem";
-
+import { useSelector } from "react-redux";
 const TodoList = () => {
+	const { todoList } = useSelector((state) => state.todo);
 	const handleClearList = () => {
 		// eslint-disable-next-line no-undef
 		dispatch(clearTodo());
@@ -9,7 +10,7 @@ const TodoList = () => {
 	return (
 		<div>
 			<div>
-				{[1, 2, 3]?.map((todo) => (
+				{todoList?.map((todo) => (
 					<TodoItem key={todo.id} {...todo} />
 				))}
 			</div>
