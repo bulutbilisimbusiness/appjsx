@@ -1,11 +1,17 @@
 import okLogo from "../../assets/ok.png";
 import deleteLogo from "../../assets/delete.png";
-
+import { useDispatch } from "react-redux";
+import { toggleTodo, deleteTodo } from "../../store/todoReducer";
 // eslint-disable-next-line react/prop-types, no-unused-vars
 const TodoItem = ({ completed, text, id }) => {
-	const handleToggle = () => {};
+	const dispatch = useDispatch();
+	const handleToggle = () => {
+		dispatch(toggleTodo(id));
+	};
 
-	const handleDelete = () => {};
+	const handleDelete = () => {
+		dispatch(deleteTodo(id));
+	};
 
 	const styled = {
 		textDecoration: completed ? "line-through" : "none",

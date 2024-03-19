@@ -1,9 +1,10 @@
+import { clearTodo } from "../../store/todoReducer";
 import TodoItem from "./TodoItem";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const TodoList = () => {
 	const { todoList } = useSelector((state) => state.todo);
+	const dispatch = useDispatch();
 	const handleClearList = () => {
-		// eslint-disable-next-line no-undef
 		dispatch(clearTodo());
 	};
 
