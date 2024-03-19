@@ -6,4 +6,7 @@ const rootReducer = combineReducers({
 	counter: counterReducer,
 	todo: todoReducer,
 });
-export const store = createStore(rootReducer, composeWithDevTools());
+export const store = createStore(
+	rootReducer,
+	process.env.NODE_ENV === "development" ? composeWithDevTools() : undefined
+);
