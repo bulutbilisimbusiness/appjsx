@@ -6,15 +6,20 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState } from "react";
-
+import { useDispatch } from "react-redux";
+import { setUser } from "../features/authSlice";
+import { useNavigate } from "react-router-dom";
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		dispatch(setUser({ email, password }));
 		setEmail("");
 		setPassword("");
+		navigate("/");
 	};
 
 	return (
@@ -35,7 +40,7 @@ export default function Login() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 					<TextField
 						margin="normal"
 						required
@@ -75,8 +80,11 @@ export default function Login() {
 
 			<Typography variant="body2" color="text.secondary" align="center">
 				{"Copyright © "}
-				<Link color="inherit" href="https://www.clarusway.com/">
-					Clarusway
+				<Link
+					color="inherit"
+					href="https://www.github.com/bulutbilisimbusiness"
+				>
+					bulutbilisimbusiness
 				</Link>{" "}
 				{new Date().getFullYear()}
 				{"."}
