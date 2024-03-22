@@ -15,7 +15,11 @@ module.exports = {
         </ul>
     `
 */
-		const data = await res.getModelList(Purchase);
+		const data = await res.getModelList(Purchase, {}, [
+			"firm_id",
+			"brand_id",
+			"product_id",
+		]);
 		//FOR REACT PROJECT
 		res.status(200).send(data);
 	},
@@ -48,7 +52,11 @@ module.exports = {
     #swagger.tags = ["Purchases"]
     #swagger.summary = "Get Single Purchase"
 */
-		const data = await Purchase.findOne({ _id: req.params.id });
+		const data = await Purchase.findOne({ _id: req.params.id }).populate([
+			"firm_id",
+			"brand_id",
+			"product_id",
+		]);
 		res.status(200).send({
 			error: false,
 			data,
