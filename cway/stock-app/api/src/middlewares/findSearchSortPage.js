@@ -28,11 +28,13 @@ module.exports = (req, res, next) => {
 	res.getModelList = async function (Model, filters = {}, populate = null) {
 		const filtersAndSearch = { ...filters, ...search };
 
-		return await Model.find(filtersAndSearch)
+		/* return await Model.find(filtersAndSearch)
 			.sort(sort)
 			.skip(skip)
 			.limit(limit)
-			.populate(populate);
+			.populate(populate); */
+		//FOR REACT PROJECT
+		return await Model.find(filtersAndSearch).populate(populate);
 	};
 
 	// Details:

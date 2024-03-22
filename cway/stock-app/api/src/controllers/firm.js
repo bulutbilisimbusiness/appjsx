@@ -27,16 +27,11 @@ module.exports = {
         in: 'body',
         required: true,
         schema: {
-            "Firmname": "test",
-            "password": "1234",
-            "email": "test@site.com",
-            "first_name": "test",
-            "last_name": "test",
+            $ref:  '#/definitions/Firm'
         }
     }
 */
-		req.body.is_staff = false;
-		req.body.is_superadmin = false;
+
 		const data = await Firm.create(req.body);
 		res.status(201).send({
 			error: false,
@@ -62,11 +57,7 @@ module.exports = {
         in: 'body',
         required: true,
         schema: {
-            "Firmname": "test",
-            "password": "1234",
-            "email": "test@site.com",
-            "first_name": "test",
-            "last_name": "test",
+            $ref:  '#/definitions/Firm'
         }
     }
 */

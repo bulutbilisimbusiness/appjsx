@@ -30,16 +30,11 @@ module.exports = {
         in: 'body',
         required: true,
         schema: {
-            "Productname": "test",
-            "password": "1234",
-            "email": "test@site.com",
-            "first_name": "test",
-            "last_name": "test",
+             $ref:  '#/definitions/Product'
         }
     }
 */
-		req.body.is_staff = false;
-		req.body.is_superadmin = false;
+
 		const data = await Product.create(req.body);
 		res.status(201).send({
 			error: false,
@@ -68,11 +63,7 @@ module.exports = {
         in: 'body',
         required: true,
         schema: {
-            "Productname": "test",
-            "password": "1234",
-            "email": "test@site.com",
-            "first_name": "test",
-            "last_name": "test",
+           $ref:  '#/definitions/Product'
         }
     }
 */

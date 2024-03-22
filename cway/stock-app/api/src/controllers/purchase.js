@@ -31,16 +31,12 @@ module.exports = {
         in: 'body',
         required: true,
         schema: {
-            "Purchasename": "test",
-            "password": "1234",
-            "email": "test@site.com",
-            "first_name": "test",
-            "last_name": "test",
+           $ref:  '#/definitions/Purchase'
         }
     }
 */
-		req.body.is_staff = false;
-		req.body.is_superadmin = false;
+
+		req.body.user_id = req.user?._id;
 		const data = await Purchase.create(req.body);
 		res.status(201).send({
 			error: false,
@@ -70,11 +66,7 @@ module.exports = {
         in: 'body',
         required: true,
         schema: {
-            "Purchasename": "test",
-            "password": "1234",
-            "email": "test@site.com",
-            "first_name": "test",
-            "last_name": "test",
+           $ref:  '#/definitions/Purchase'
         }
     }
 */
