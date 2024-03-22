@@ -9,7 +9,7 @@ module.exports = {
 		/*
             #swagger.tags = ["Authentication"]
             #swagger.summary = "Login"
-            #swagger.description = 'Login with username (or email) and password.'
+            #swagger.description = 'Login with username (or email) and password for get simpleToken and jwt.'
             #swagger.parameters["body"] = {
                 in: "body",
                 required: true,
@@ -61,21 +61,86 @@ module.exports = {
 			throw new Error("Please enter username/email and password.");
 		}
 	},
+	refresh: async (req, res) => {
+		/*
+            #swagger.tags = ['Authentication']
+            #swagger.summary = 'JWT: Refresh'
+            #swagger.description = 'Refresh accessToken with refreshToken'
+            #swagger.parameters['body'] = {
+                in: 'body',
+                required: true,
+                schema: {
+                    bearer: {
+                        refresh: '...refreshToken...'
+                    }
+                }
+            }
+        */
+		const refreshToken = req.body?.bearer?.refreshToken;
+		if (refreshToken) {
+			jwt.verify(
+				refreshToken,
+				process.env.REFRESH_KEY,
+				async function (err, userData) {
+					if (err) {
+						res.errorStatusCode = 401;
+						throw err;
+					} else {
+						const { _id, password } = userData;
+						if (_id && password) {
+							const user = await User.findOne({ _id });
+							if (user && user.password == password) {
+								if (user.is_active) {
+									const accessToken = jwt.sign(
+										user.toJSON(),
+										process.env.ACCESS_KEY,
+										{ expiresIn: "30m" }
+									);
+									res.send({
+										error: false,
+										bearer: { accessToken },
+									});
+								} else {
+									res.errorStatusCode = 401;
+									throw new Error("This account is not active.");
+								}
+							} else {
+								res.errorStatusCode = 401;
+								throw new Error("Wrong id or password.");
+							}
+						} else {
+							res.errorStatusCode = 401;
+							throw new Error("Please enter id and password.");
+						}
+					}
+				}
+			);
+		} else {
+			res.errorStatusCode = 401;
+			throw new Error("Please enter token.refresh");
+		}
+	},
 	logout: async (req, res) => {
 		/*
             #swagger.tags = ["Authentication"]
-            #swagger.summary = "Logout"
+            #swagger.summary = "SimpleToken:Logout"
             #swagger.description = 'Delete token key.'
         */
 		const auth = req.headers?.authorization || null;
 		const tokenKey = auth ? auth.split(" ") : null;
-		let result = {};
-		if (tokenKey && tokenKey[0] == "Token") {
-			result = await Token.deleteOne({ token: tokenKey[1] });
+		let message = null,
+			result = {};
+		if (tokenKey) {
+			if (tokenKey[0] == "Token") {
+				result = await Token.deleteOne({ token: tokenKey[1] });
+				message = "Logout was OK.";
+			} else {
+				message = "No need any process for logout. You must delete JWT tokens";
+			}
 		}
 		res.send({
 			error: false,
-			message: "Logout was OK.",
+			message,
 			result,
 		});
 	},
