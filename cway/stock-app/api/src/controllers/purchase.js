@@ -1,6 +1,7 @@
 "use strict";
 
 const Purchase = require("../models/purchase");
+const Product = require("../models/product");
 module.exports = {
 	list: async (req, res) => {
 		/*
@@ -38,6 +39,10 @@ module.exports = {
 
 		req.body.user_id = req.user?._id;
 		const data = await Purchase.create(req.body);
+		const updateProduct = await Product.updateOne(
+			{ _id: data.product_id },
+			{ $inc: { stock: +data.quantity } }
+		);
 		res.status(201).send({
 			error: false,
 			data,
@@ -70,6 +75,14 @@ module.exports = {
         }
     }
 */
+		if (req.body?.quantity) {
+			const currentPurchase = await Purchase.findOne({ _id: req.params.id });
+			const quantity = req.body.quantity - currentPurchase.quantity;
+			const updateProduct = await Product.updateOne(
+				{ _id: currentPurchase.product_id },
+				{ $inc: { stock: +quantity } }
+			);
+		}
 		const data = await Purchase.updateOne({ _id: req.params.id }, req.body, {
 			runValidators: true,
 		});
@@ -84,7 +97,12 @@ module.exports = {
     #swagger.tags = ["Purchases"]
     #swagger.summary = "Delete Purchase"
 */
+		const currentPurchase = await Purchase.findOne({ _id: req.params.id });
 		const data = await Purchase.deleteOne({ _id: req.params.id });
+		const updateProduct = await Product.updateOne(
+			{ _id: currentPurchase.product_id },
+			{ $inc: { stock: -currentPurchase.quantity } }
+		);
 		res.status(data.deletedCount ? 204 : 404).send({
 			error: !data.deletedCount,
 			data,

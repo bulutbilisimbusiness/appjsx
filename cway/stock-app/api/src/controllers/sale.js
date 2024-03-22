@@ -1,5 +1,6 @@
 "use strict";
 
+const Product = require("../models/product");
 const Sale = require("../models/sale");
 module.exports = {
 	list: async (req, res) => {
@@ -33,11 +34,23 @@ module.exports = {
 */
 
 		req.body.user_id = req.user?._id;
-		const data = await Sale.create(req.body);
-		res.status(201).send({
-			error: false,
-			data,
-		});
+		const currentProduct = await Product.findOne({ _id: req.body.product_id });
+		if (currentProduct.stock >= req.body.quantityt) {
+			const data = await Sale.create(req.body);
+			const updateProduct = await Product.updateOne(
+				{ _id: data.product_id },
+				{ $inc: { stock: -data.quantity } }
+			);
+			res.status(201).send({
+				error: false,
+				data,
+			});
+		} else {
+			res.errorStatusCode = 422;
+			throw new Error("There is not enough stock for this sale", {
+				cause: { currentProduct },
+			});
+		}
 	},
 	read: async (req, res) => {
 		/*
@@ -65,6 +78,18 @@ module.exports = {
         }
     }
 */
+		if (req.body?.quantity) {
+			const currentSale = await Sale.findOne({ _id: req.params.id });
+			const quantity = req.body.quantity - currentSale.quantity;
+			const updateProduct = await Product.updateOne(
+				{ _id: currentSale.product_id, stock: { $gte: quantity } },
+				{ $inc: { stock: -quantity } }
+			);
+			if (updateProduct.modifiedCount == 0) {
+				res.errorStatusCode = 422;
+				throw new Error("There is not enough stock for this sale.");
+			}
+		}
 		const data = await Sale.updateOne({ _id: req.params.id }, req.body, {
 			runValidators: true,
 		});
@@ -79,7 +104,12 @@ module.exports = {
     #swagger.tags = ["Sales"]
     #swagger.summary = "Delete Sale"
 */
-		const data = await Sale.deleteOne({ _id: req.params.id });
+		const currentPurchase = await Purchase.findOne({ _id: req.params.id });
+		const data = await Purchase.deleteOne({ _id: req.params.id });
+		const updateProduct = await Product.updateOne(
+			{ _id: currentPurchase.product_id },
+			{ $inc: { stock: +currentPurchase.quantity } }
+		);
 		res.status(data.deletedCount ? 204 : 404).send({
 			error: !data.deletedCount,
 			data,

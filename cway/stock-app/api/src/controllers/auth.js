@@ -1,5 +1,5 @@
 "use strict";
-
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Token = require("../models/token");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
@@ -30,11 +30,22 @@ module.exports = {
 							user_id: user._id,
 							token: passwordEncrypt(user._id.toString() + Date.now()),
 						});
+					const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, {
+						expiresIn: "30m",
+					});
+					const refreshToken = jwt.sign(
+						{ _id: user._id, password: user.password },
+						process.env.REFRESH_KEY,
+						{
+							expiresIn: "3d",
+						}
+					);
 					res.send({
 						error: false,
 						//token:tokenData.token,
 						//FOR REACT PROJECT
 						key: tokenData.token,
+						bearer: { accessToken, refreshToken },
 						user,
 					});
 				} else {
