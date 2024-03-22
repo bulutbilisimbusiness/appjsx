@@ -4,12 +4,50 @@ const { mongoose } = require("../configs/dbConnection");
 
 const PurchaseSchema = new mongoose.Schema(
 	{
-		name: { type: String, trim: true, required: true, unique: true },
-		image: { type: String, trim: true },
+		user_id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+		},
+		firm_id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Firm",
+			required: true,
+		},
+		brand_id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Brand",
+			required: true,
+		},
+		product_id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Product",
+			required: true,
+		},
+		quantity: {
+			type: Number,
+			default: 0,
+		},
+		price: {
+			type: Number,
+			default: 0,
+		},
+		price_total: {
+			type: Number,
+			default: function () {
+				return this.price * this.quantity;
+			},
+			transform: function () {
+				return this.price * this.quantity;
+			},
+			/* set: function () {
+				return this.price * this.quantity;
+			}, */
+		},
 	},
 
 	{
-		collection: "Purchases",
+		collection: "purchases",
 		timestamps: true,
 	}
 );

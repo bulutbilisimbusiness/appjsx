@@ -21,10 +21,10 @@ router.use("/categories", require("./category"));
 router.use("/firms", require("./firm"));
 // product:
 router.use("/products", require("./product"));
-// // purchase:
-// router.use('/purchases', require('./purchase'))
-// // sale:
-// router.use('/sales', require('./sale'))
+// purchase:
+router.use("/purchases", require("./purchase"));
+// sale:
+router.use("/sales", require("./sale"));
 
 // document:
 router.use("/documents", require("./document"));
