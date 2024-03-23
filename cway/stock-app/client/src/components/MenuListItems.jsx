@@ -10,6 +10,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import StarsIcon from "@mui/icons-material/Stars";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import { useNavigate } from "react-router-dom";
 
 const icons = [
 	{
@@ -49,11 +50,22 @@ const icons = [
 	},
 ];
 const MenuListItems = () => {
+	const navigate = useNavigate();
 	return (
 		<div>
 			<List>
 				{icons.map((item, index) => (
-					<ListItem key={index} disablePadding>
+					<ListItem
+						key={index}
+						disablePadding
+						onClick={() => navigate(item.url)}
+						sx={{
+							color: "white",
+							"&.MuiSvgIcon0root": { color: "white" },
+							"&:hover": { color: "red" },
+							"&:hover.MuiSvgIcon-root": { color: "red" },
+						}}
+					>
 						<ListItemButton>
 							<ListItemIcon>{item.icon}</ListItemIcon>
 							<ListItemText primary={item.title} />
