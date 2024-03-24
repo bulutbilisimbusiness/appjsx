@@ -58,7 +58,11 @@ const MenuListItems = () => {
 					<ListItem
 						key={index}
 						disablePadding
-						onClick={() => navigate(item.url)}
+						onClick={() => {
+							item.url.includes("http" || "www")
+								? window.open(item.url, "_blank")
+								: navigate(item.url);
+						}}
 						sx={{
 							color: "white",
 							"&.MuiSvgIcon0root": { color: "white" },
