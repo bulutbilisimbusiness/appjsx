@@ -18,9 +18,9 @@ const stockSlice = createSlice({
 			state.loading = true;
 			state.error = false;
 		},
-		getFirmsSuccess: (state, { payload }) => {
+		getStockSuccess: (state, { payload: { data, url } }) => {
 			state.loading = false;
-			state.firms = payload;
+			state[url] = data;
 		},
 
 		fetchFail: (state) => {
@@ -30,5 +30,5 @@ const stockSlice = createSlice({
 	},
 });
 
-export const { fetchStart, getFirmsSuccess, fetchFail } = stockSlice.actions;
+export const { fetchStart, fetchFail, getStockSuccess } = stockSlice.actions;
 export default stockSlice.reducer;
