@@ -5,10 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import useStockCall from "../hooks/useStockCall";
 import Typography from "@mui/material/Typography";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlineIcon";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { btnStyle } from "../styles/globalStyles";
-export default function FirmCard({ firm, handleOpen }) {
+export default function FirmCard({ firm, handleOpen, setInfo }) {
 	const { deleteStockData } = useStockCall();
 	return (
 		<Card
@@ -40,7 +40,13 @@ export default function FirmCard({ firm, handleOpen }) {
 				{firm.phone}
 			</Typography>
 			<CardActions>
-				<EditIcon sx={btnStyle} onClick={handleOpen} />
+				<EditIcon
+					sx={btnStyle}
+					onClick={() => {
+						handleOpen();
+						setInfo(firm);
+					}}
+				/>
 				<DeleteOutlineIcon
 					sx={btnStyle}
 					onClick={() => deleteStockData("firms", firm.id)}

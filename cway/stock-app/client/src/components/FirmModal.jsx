@@ -5,30 +5,24 @@ import Button from "@mui/material/Button";
 //import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { modalStyle } from "../styles/globalStyles";
-import { useState } from "react";
+
 import useStockCall from "../hooks/useStockCall";
 
-export default function FirmModal({ open, handleClose }) {
-	const { postStockCall } = useStockCall();
-	const [info, setInfo] = useState({
-		name: "",
-		phone: "",
-		address: "",
-		image: "",
-	});
+export default function FirmModal({ open, handleClose, info, setInfo }) {
+	const { postStockCall, putStockData } = useStockCall();
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setInfo({ ...info, [name]: value });
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		postStockCall("firms", info);
-		setInfo({
-			name: "",
-			phone: "",
-			address: "",
-			image: "",
-		});
+		if (info.id) {
+			putStockData("firms", info);
+		} else {
+			postStockCall("firms", info);
+		}
+
 		handleClose();
 	};
 	return (
