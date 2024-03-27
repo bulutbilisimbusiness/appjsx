@@ -9,7 +9,7 @@ import { modalStyle } from "../styles/globalStyles";
 import useStockCall from "../hooks/useStockCall";
 
 export default function FirmModal({ open, handleClose, info, setInfo }) {
-	const { postStockCall, putStockData } = useStockCall();
+	const { postStockData, putStockData } = useStockCall();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -20,7 +20,7 @@ export default function FirmModal({ open, handleClose, info, setInfo }) {
 		if (info.id) {
 			putStockData("firms", info);
 		} else {
-			postStockCall("firms", info);
+			postStockData("firms", info);
 		}
 
 		handleClose();
