@@ -1,44 +1,41 @@
+import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
-
+import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
 import useStockCall from "../hooks/useStockCall";
-import Grid from "@mui/material/Grid";
 import FirmCard from "../components/FirmCard";
 import FirmModal from "../components/FirmModal";
 
 const Firms = () => {
 	const { getStockData } = useStockCall();
 	const { firms } = useSelector((state) => state.stock);
+
 	const [info, setInfo] = useState({
 		name: "",
 		phone: "",
 		address: "",
 		image: "",
 	});
+
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => {
 		setOpen(false);
-		setInfo({
-			name: "",
-			phone: "",
-			address: "",
-			image: "",
-		});
+		setInfo({ name: "", phone: "", address: "", image: "" });
 	};
 
 	useEffect(() => {
 		getStockData("firms");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<div>
-			<Typography variant="h4" color={"error"} mb={4}>
+			<Typography variant="h4" color={"error"} mb={3}>
 				Firms
 			</Typography>
-			<Button variant="contained" onClick={() => handleOpen}>
+			<Button variant="contained" onClick={handleOpen} sx={{ mb: 4 }}>
 				NEW FIRM
 			</Button>
 
@@ -48,6 +45,7 @@ const Firms = () => {
 				info={info}
 				setInfo={setInfo}
 			/>
+
 			<Grid container justifyContent={"center"} spacing={2}>
 				{firms?.map((firm) => (
 					<Grid item key={firm.id}>

@@ -1,74 +1,81 @@
 import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
-
-const columns = [
-	{
-		field: "id",
-		headerName: "#",
-		width: 90,
-		headerAlign: "center",
-		flex: 0.5,
-		align: "center",
-	},
-
-	{
-		field: "category",
-		headerName: "Category",
-		flex: 2,
-		headerAlign: "center",
-		align: "center",
-	},
-	{
-		field: "brand",
-		headerName: "Brand",
-		type: "number",
-		headerAlign: "center",
-		flex: 2,
-		align: "center",
-	},
-	{
-		field: "name",
-		headerName: "Name",
-		headerAlign: "center",
-		flex: 1,
-		align: "center",
-	},
-	{
-		field: "stock",
-		headerName: "Stock",
-		type: "number",
-		flex: 1,
-		headerAlign: "center",
-		align: "center",
-	},
-	{
-		field: "action",
-		headerName: "Actions",
-		type: "number",
-		flex: 1,
-		headerAlign: "center",
-		align: "center",
-	},
-];
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { btnStyle } from "../styles/globalStyles";
+import useStockCall from "../hooks/useStockCall";
 
 export default function ProductTable() {
 	const { products } = useSelector((state) => state.stock);
+	const { deleteStockData } = useStockCall();
+	const columns = [
+		{
+			field: "id",
+			headerName: "#",
+			width: 90,
+			headerAlign: "center",
+			flex: 0.5,
+			align: "center",
+		},
+
+		{
+			field: "category",
+			headerName: "Category",
+			flex: 2,
+			headerAlign: "center",
+			align: "center",
+		},
+		{
+			field: "brand",
+			headerName: "Brand",
+
+			headerAlign: "center",
+			flex: 2,
+			align: "center",
+		},
+		{
+			field: "name",
+			headerName: "Name",
+			headerAlign: "center",
+			flex: 1,
+			align: "center",
+		},
+		{
+			field: "stock",
+			headerName: "Stock",
+			type: "number",
+			flex: 1,
+			headerAlign: "center",
+			align: "center",
+		},
+		{
+			field: "action",
+			headerName: "Actions",
+			type: "actions",
+			flex: 1,
+			headerAlign: "center",
+			align: "center",
+			getActions: (params) => [
+				<GridActionsCellItem
+					key={params.id}
+					icon={<DeleteForeverIcon />}
+					label="Delete"
+					sx={btnStyle}
+					onClick={() => deleteStockData("products", params.id)}
+				/>,
+			],
+		},
+	];
+
 	return (
-		<Box sx={{ height: 400, width: "100%" }}>
+		<Box sx={{ width: "100%", mt: 4 }}>
 			<DataGrid
+				autoHeight
 				rows={products}
 				columns={columns}
-				initialState={{
-					pagination: {
-						paginationModel: {
-							pageSize: 5,
-						},
-					},
-				}}
-				pageSizeOptions={[5]}
-				checkboxSelection
+				pageSizeOptions={[20, 50, 75, 100]}
 				disableRowSelectionOnClick
+				slots={{ toolbar: GridToolbar }}
 			/>
 		</Box>
 	);

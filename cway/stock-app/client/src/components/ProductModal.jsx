@@ -2,10 +2,8 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
 import Modal from "@mui/material/Modal";
 import { modalStyle } from "../styles/globalStyles";
-
 import useStockCall from "../hooks/useStockCall";
 import { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
