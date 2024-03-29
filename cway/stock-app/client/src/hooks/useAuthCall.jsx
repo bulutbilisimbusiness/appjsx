@@ -14,11 +14,10 @@ const useAuthCall = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const login = async (userData) => {
-		const BASE_URL = import.meta.env.VITE_BASE_URL;
 		dispatch(fetchStart());
 		try {
 			const { data } = await axios.post(
-				`${BASE_URL}/api/account/auth/login`,
+				`${import.meta.env.VITE_BASE_URL}/account/auth/login/`,
 				userData
 			);
 			dispatch(loginSuccess(data));
@@ -33,10 +32,9 @@ const useAuthCall = () => {
 		}
 	};
 	const logout = async () => {
-		const BASE_URL = import.meta.env.VITE_BASE_URL;
 		dispatch(fetchStart());
 		try {
-			await axios.post(`${BASE_URL}/account/auth/logout`);
+			await axios.post(`${import.meta.env.VITE_BASE_URL}/account/auth/logout/`);
 			dispatch(logoutSuccess());
 
 			toastSuccessNotify("Logout islemi basarili");
@@ -49,11 +47,10 @@ const useAuthCall = () => {
 		}
 	};
 	const register = async (userData) => {
-		const BASE_URL = import.meta.env.VITE_BASE_URL;
 		dispatch(fetchStart());
 		try {
 			const { data } = await axios.post(
-				`${BASE_URL}/account/register`,
+				`${import.meta.env.VITE_BASE_URL}/account/register/`,
 				userData
 			);
 			dispatch(registerSuccess(data));

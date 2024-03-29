@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 
 module.exports = function (to, subject, message) {
 	// Set Passive:
-	return true;
+	//return true;
 
 	//? GoogleMail (gmail):
 	// Google -> AccountHome -> Security -> Two-Step-Verify -> App-Passwords

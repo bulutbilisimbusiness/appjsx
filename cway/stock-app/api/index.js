@@ -2,10 +2,10 @@
 
 const express = require("express");
 const app = express();
-const cors = require("cors");
+
 /* ------------------------------------------------------- */
 // Required Modules:
-app.use(cors());
+
 // envVariables to process.env:
 require("dotenv").config();
 const HOST = process.env?.HOST || "127.0.0.1";
@@ -26,6 +26,19 @@ dbConnection();
 
 // Accept JSON:
 app.use(express.json());
+
+// CORS Middleware:
+
+// app.use(require('cors')()) // Run with defaults.
+app.use(
+	require("cors")({
+		origin: [
+			"http://localhost:3000",
+			"http://localhost:4173",
+			"http://localhost:5173",
+		],
+	})
+);
 
 // Call static uploadFile:
 app.use("/upload", express.static("./upload"));
@@ -69,4 +82,4 @@ app.listen(PORT, HOST, () => console.log(`http://${HOST}:${PORT}`));
 
 /* ------------------------------------------------------- */
 // Syncronization (must be in commentLine):
-//require("./src/helpers/sync")(); // !!! It clear database.
+// require('./src/helpers/sync')() // !!! It clear database.

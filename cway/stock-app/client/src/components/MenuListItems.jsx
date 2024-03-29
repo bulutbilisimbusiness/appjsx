@@ -9,7 +9,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import StoreIcon from "@mui/icons-material/Store";
 import StarsIcon from "@mui/icons-material/Stars";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+//import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import { useNavigate } from "react-router-dom";
 
 const icons = [
@@ -43,11 +43,11 @@ const icons = [
 		icon: <InventoryIcon />,
 		url: "/stock/products/",
 	},
-	{
+	/* {
 		title: "Admin Panel",
 		icon: <SupervisorAccountIcon />,
 		url: "http://127.0.0.0:8000/admin",
-	},
+	}, */
 ];
 const MenuListItems = () => {
 	const navigate = useNavigate();

@@ -40,8 +40,8 @@ const KpiCards = () => {
 	];
 	return (
 		<Grid container justifyContent="center" spacing={2}>
-			{cardData.map((item) => (
-				<Grid item key={item.id}>
+			{cardData.map((item, index) => (
+				<Grid item key={item.id || index}>
 					<Paper
 						sx={{
 							display: "flex",
