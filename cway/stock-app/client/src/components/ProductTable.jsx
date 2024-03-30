@@ -1,15 +1,23 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { btnStyle } from "../styles/globalStyles";
 import useStockCall from "../hooks/useStockCall";
 
 export default function ProductTable() {
 	const { products } = useSelector((state) => state.stock);
 	const { deleteStockData } = useStockCall();
+	const [processedProducts, setProcessedProducts] = useState([]);
+
+	useEffect(() => {
+		const newProducts = products.map((product) => ({
+			...product,
+			category: product.category_id?.name || "N/A",
+			brand: product.brand_id?.name || "N/A",
+		}));
+		setProcessedProducts(newProducts);
+	}, [products]);
 
 	const columns = [
 		{
@@ -21,16 +29,13 @@ export default function ProductTable() {
 		},
 		{
 			field: "category",
-			valueGetter: (params) => params.row.category_id?.name,
 			headerName: "Category",
 			flex: 2,
 			headerAlign: "center",
 			align: "center",
-			minWidth: 80,
 		},
 		{
 			field: "brand",
-			valueGetter: (params) => params.row.brand_id?.name,
 			headerName: "Brand",
 			flex: 2,
 			headerAlign: "center",
@@ -58,30 +63,28 @@ export default function ProductTable() {
 			flex: 1,
 			headerAlign: "center",
 			align: "center",
-			getActions: (props) => [
+			getActions: (params) => [
 				<GridActionsCellItem
-					key={props.id}
+					key={params.id}
 					icon={<DeleteForeverIcon />}
 					label="Delete"
-					sx={btnStyle}
-					onClick={() => deleteStockData("products", props.id)}
+					sx={{ "&:hover": { color: "red" }, cursor: "pointer" }}
+					onClick={() => deleteStockData("products", params.id)}
 				/>,
 			],
 		},
 	];
 
-	//? api'Den gelmeyen colum bilgileri icin getActions veya renderCell islevleri kullanilabilir.
-	//? bu islevler aslinda isimsiz bir fonksiyon cagirirlar ve bu fonksiyon aldigi parametre (params) ile bir cok veriye (rows,columns gibi) erisebilir.
-
 	return (
 		<Box sx={{ width: "100%", mt: 4 }}>
 			<DataGrid
 				autoHeight
-				rows={products}
+				rows={processedProducts}
 				columns={columns}
-				pageSizeOptions={[20, 50, 75, 100]} //? sayfa basina satir sayisi
-				disableRowSelectionOnClick
 				slots={{ toolbar: GridToolbar }}
+				pageSizeOptions={[20, 50, 75, 100]}
+				disableRowSelectionOnClick
+				components={{ Toolbar: GridToolbar }}
 			/>
 		</Box>
 	);

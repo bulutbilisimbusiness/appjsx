@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
@@ -11,6 +12,16 @@ import EditIcon from "@mui/icons-material/Edit";
 export default function SaleTable({ handleOpen, setInfo }) {
 	const { sales } = useSelector((state) => state.stock);
 	const { deleteStockData } = useStockCall();
+	const [processedSales, setProcessedSales] = useState([]);
+
+	useEffect(() => {
+		const newSales = sales.map((sale) => ({
+			...sale,
+			brand: sale.brand_id?.name || "N/A",
+			product: sale.product_id?.name || "N/A",
+		}));
+		setProcessedSales(newSales);
+	}, [sales]);
 
 	const columns = [
 		{
@@ -21,10 +32,8 @@ export default function SaleTable({ handleOpen, setInfo }) {
 			align: "center",
 			flex: 1,
 		},
-
 		{
 			field: "brand",
-			valueGetter: (params) => params.row.brand_id?.name,
 			headerName: "Brand",
 			flex: 1,
 			minWidth: 100,
@@ -33,7 +42,6 @@ export default function SaleTable({ handleOpen, setInfo }) {
 		},
 		{
 			field: "product",
-			valueGetter: (params) => params.row.product_id?.name,
 			headerName: "Product",
 			flex: 1,
 			minWidth: 100,
@@ -71,7 +79,7 @@ export default function SaleTable({ handleOpen, setInfo }) {
 			headerAlign: "center",
 			align: "center",
 			flex: 1,
-			renderCell: ({ id, row: { brand_id, product_id, quantity, price } }) => {
+			renderCell: (params) => {
 				return [
 					<GridActionsCellItem
 						key={"edit"}
@@ -79,7 +87,13 @@ export default function SaleTable({ handleOpen, setInfo }) {
 						label="Edit"
 						onClick={() => {
 							handleOpen();
-							setInfo({ id, brand_id, product_id, quantity, price });
+							setInfo({
+								id: params.id,
+								brand_id: params.row.brand_id,
+								product_id: params.row.product_id,
+								quantity: params.row.quantity,
+								price: params.row.price,
+							});
 						}}
 						sx={btnStyle}
 					/>,
@@ -87,7 +101,7 @@ export default function SaleTable({ handleOpen, setInfo }) {
 						key={"delete"}
 						icon={<DeleteForeverIcon />}
 						label="Delete"
-						onClick={() => deleteStockData("sales", id)}
+						onClick={() => deleteStockData("sales", params.id)}
 						sx={btnStyle}
 					/>,
 				];
@@ -99,15 +113,14 @@ export default function SaleTable({ handleOpen, setInfo }) {
 		<Box sx={{ width: "100%", mt: 2 }}>
 			<DataGrid
 				autoHeight
-				rows={sales}
+				rows={processedSales}
 				columns={columns}
 				pageSize={10}
-				pageSizeOptions={[20, 50, 75, 100]}
 				slots={{ toolbar: GridToolbar }}
+				pageSizeOptions={[20, 50, 75, 100]}
+				components={{ Toolbar: GridToolbar }}
 				disableRowSelectionOnClick
-				sx={{
-					boxShadow: 4,
-				}}
+				sx={{ boxShadow: 4 }}
 			/>
 		</Box>
 	);

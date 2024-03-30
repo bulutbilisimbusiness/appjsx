@@ -6,10 +6,10 @@ import image from "../assets/result.svg";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
-import RegisterForm, { registerSchema } from "../components/RegisterForm";
+import RegisterForm from "../components/RegisterForm";
 import { Formik } from "formik";
 import useAuthCall from "../hooks/useAuthCall";
-
+import { registerSchema } from "../validations/registerSchema";
 const Register = () => {
 	const { register } = useAuthCall();
 

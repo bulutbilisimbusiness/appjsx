@@ -59,7 +59,7 @@ function Dashboard(props) {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-						Stock App
+						Stock Management System
 					</Typography>
 
 					<Button variant="contained" onClick={() => logout()}>
