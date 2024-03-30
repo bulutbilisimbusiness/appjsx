@@ -1,10 +1,13 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import React from "react";
 import { flexColumn, modalStyle } from "../styles/globalStyles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import useStockCall from "../hooks/useStockCall";
-import PropTypes from "prop-types";
+
 export default function BrandModal({ open, setOpen, info, setInfo }) {
 	const { postStockData, putStockData } = useStockCall();
 
@@ -65,20 +68,3 @@ export default function BrandModal({ open, setOpen, info, setInfo }) {
 		</Modal>
 	);
 }
-BrandModal.propTypes = {
-	open: PropTypes.bool.isRequired,
-	handleClose: PropTypes.func.isRequired,
-	info: PropTypes.shape({
-		brand_id: PropTypes.string,
-		product_id: PropTypes.string,
-		firm_id: PropTypes.string,
-		quantity: PropTypes.string,
-		price: PropTypes.string,
-		name: PropTypes.string,
-		id: PropTypes.string,
-		image: PropTypes.string,
-	}).isRequired,
-	setInfo: PropTypes.func.isRequired,
-	handleOpen: PropTypes.func.isRequired,
-	setOpen: PropTypes.func.isRequired,
-};

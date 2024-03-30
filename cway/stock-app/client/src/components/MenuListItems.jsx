@@ -43,14 +43,17 @@ const icons = [
 		icon: <InventoryIcon />,
 		url: "/stock/products/",
 	},
-	/* {
-		title: "Admin Panel",
-		icon: <SupervisorAccountIcon />,
-		url: "http://127.0.0.0:8000/admin",
-	}, */
+	// {
+	//   title: "Admin Panel",
+	//   icon: <SupervisorAccountIcon />,
+	//   url: "https://10001.fullstack.clarusway.com/admin",
+	// },
 ];
+
 const MenuListItems = () => {
 	const navigate = useNavigate();
+
+	//? window.location.href =item.url
 	return (
 		<div>
 			<List>
@@ -65,9 +68,9 @@ const MenuListItems = () => {
 						}}
 						sx={{
 							color: "white",
-							"&.MuiSvgIcon0root": { color: "white" },
+							"& .MuiSvgIcon-root": { color: "white" },
 							"&:hover": { color: "red" },
-							"&:hover.MuiSvgIcon-root": { color: "red" },
+							"&:hover .MuiSvgIcon-root": { color: "red" },
 						}}
 					>
 						<ListItemButton>
@@ -80,4 +83,5 @@ const MenuListItems = () => {
 		</div>
 	);
 };
+
 export default MenuListItems;

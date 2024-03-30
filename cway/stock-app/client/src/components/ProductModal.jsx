@@ -1,41 +1,41 @@
 /* eslint-disable react/prop-types */
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import { modalStyle } from "../styles/globalStyles";
-import useStockCall from "../hooks/useStockCall";
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Modal from "@mui/material/Modal";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+
+import { modalStyle } from "../styles/globalStyles";
+import useStockCall from "../hooks/useStockCall";
 import { useSelector } from "react-redux";
+
 export default function ProductModal({ open, handleClose }) {
 	const { postStockData } = useStockCall();
 	const { categories, brands } = useSelector((state) => state.stock);
-	const [info, setInfo] = useState({
-		category_id: "",
-		brand_id: "",
-		name: "",
-	});
+
+	const [info, setInfo] = useState({ name: "", category_id: "", brand_id: "" });
+
 	const handleChange = (e) => {
 		setInfo({ ...info, [e.target.name]: e.target.value });
 	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
 		postStockData("products", info);
-
 		handleClose();
-		setInfo({ category_id: "", brand_id: "", name: "" });
+		setInfo({ name: "", category_id: "", brand_id: "" });
 	};
 	return (
 		<div>
 			<Modal
 				open={open}
 				onClose={() => {
-					setInfo({ category_id: "", brand_id: "", name: "" });
+					setInfo({ name: "", category_id: "", brand_id: "" });
 					handleClose();
 				}}
 				aria-labelledby="modal-modal-title"
@@ -50,31 +50,32 @@ export default function ProductModal({ open, handleClose }) {
 						<FormControl fullWidth>
 							<InputLabel id="category">Categories</InputLabel>
 							<Select
-								labelId="Categories"
+								labelId="category"
 								id="category"
 								name="category_id"
 								value={info?.category_id || ""}
 								label="category"
 								onChange={handleChange}
 							>
-								{categories.map((id, name) => (
+								{categories?.map(({ id, name }) => (
 									<MenuItem key={id} value={id}>
 										{name}
 									</MenuItem>
 								))}
 							</Select>
 						</FormControl>
+
 						<FormControl fullWidth>
 							<InputLabel id="brand">Brands</InputLabel>
 							<Select
-								labelId="Brands"
+								labelId="brand"
 								id="brand"
 								name="brand_id"
 								value={info?.brand_id || ""}
 								label="brand"
 								onChange={handleChange}
 							>
-								{brands.map((id, name) => (
+								{brands?.map(({ id, name }) => (
 									<MenuItem key={id} value={id}>
 										{name}
 									</MenuItem>
@@ -87,13 +88,13 @@ export default function ProductModal({ open, handleClose }) {
 							id="name"
 							type="text"
 							variant="outlined"
-							value={info?.name}
+							value={info?.name || ""}
 							required
 							onChange={handleChange}
 						/>
 
 						<Button variant="contained" type="submit">
-							Submit Firm
+							Submit
 						</Button>
 					</Box>
 				</Box>

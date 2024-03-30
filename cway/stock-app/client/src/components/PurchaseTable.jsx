@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
@@ -5,7 +7,7 @@ import useStockCall from "../hooks/useStockCall";
 import { btnStyle } from "../styles/globalStyles";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
-import PropTypes from "prop-types";
+
 export default function PurchaseTable({ handleOpen, setInfo }) {
 	const { purchases } = useSelector((state) => state.stock);
 	const { deleteStockData } = useStockCall();
@@ -20,6 +22,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		},
 		{
 			field: "firm",
+			valueGetter: (params) => params.row.firm_id?.name,
 			headerName: "Firm",
 			flex: 2,
 			minWidth: 100,
@@ -29,6 +32,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 
 		{
 			field: "brand",
+			valueGetter: (params) => params.row.brand_id?.name,
 			headerName: "Brand",
 			flex: 1.5,
 			minWidth: 100,
@@ -37,6 +41,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		},
 		{
 			field: "product",
+			valueGetter: (params) => params.row.product_id?.name,
 			headerName: "Product",
 			flex: 1.5,
 			minWidth: 100,
@@ -46,7 +51,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		{
 			field: "quantity",
 			headerName: "Quantity",
-			minWidth: 50,
+			minWidth: 70,
 			headerAlign: "center",
 			align: "center",
 			flex: 1,
@@ -55,7 +60,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		{
 			field: "price",
 			headerName: "Price",
-			minWidth: 50,
+			minWidth: 70,
 			headerAlign: "center",
 			align: "center",
 			flex: 1,
@@ -64,7 +69,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		{
 			field: "price_total",
 			headerName: "Amount",
-			minWidth: 50,
+			minWidth: 90,
 			headerAlign: "center",
 			align: "center",
 			flex: 1,
@@ -73,7 +78,7 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		{
 			field: "actions",
 			headerName: "Actions",
-			minWidth: 40,
+			minWidth: 70,
 			headerAlign: "center",
 			align: "center",
 			flex: 1,
@@ -119,16 +124,3 @@ export default function PurchaseTable({ handleOpen, setInfo }) {
 		</Box>
 	);
 }
-PurchaseTable.propTypes = {
-	open: PropTypes.bool.isRequired,
-	handleClose: PropTypes.func.isRequired,
-	info: PropTypes.shape({
-		brand_id: PropTypes.string,
-		product_id: PropTypes.string,
-		quantity: PropTypes.string,
-		price: PropTypes.string,
-		id: PropTypes.string,
-	}).isRequired,
-	setInfo: PropTypes.func.isRequired,
-	handleOpen: PropTypes.func.isRequired,
-};

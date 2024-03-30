@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import PropTypes from "prop-types";
+
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import useStockCall from "../hooks/useStockCall";
@@ -16,7 +18,8 @@ export default function PurchaseModal({ open, handleClose, info, setInfo }) {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setInfo({ ...info, [name]: Number(value) });
+		// setInfo({ ...info, [name]: Number(value) })
+		setInfo({ ...info, [name]: value });
 	};
 
 	const handleSubmit = (e) => {
@@ -157,17 +160,3 @@ export default function PurchaseModal({ open, handleClose, info, setInfo }) {
 		</div>
 	);
 }
-PurchaseModal.propTypes = {
-	open: PropTypes.bool.isRequired,
-	handleClose: PropTypes.func.isRequired,
-	info: PropTypes.shape({
-		brand_id: PropTypes.string,
-		product_id: PropTypes.string,
-		firm_id: PropTypes.string,
-		quantity: PropTypes.string,
-		price: PropTypes.string,
-		id: PropTypes.string,
-	}).isRequired,
-	setInfo: PropTypes.func.isRequired,
-	handleOpen: PropTypes.func.isRequired,
-};

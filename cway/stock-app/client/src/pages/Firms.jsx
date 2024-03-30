@@ -6,8 +6,31 @@ import { useSelector } from "react-redux";
 import useStockCall from "../hooks/useStockCall";
 import FirmCard from "../components/FirmCard";
 import FirmModal from "../components/FirmModal";
+// import axios from "axios"
+// import { useDispatch } from "react-redux"
+// import { fetchFail, fetchStart, getFirmsSuccess } from "../features/stockSlice"
 
 const Firms = () => {
+	// const { token } = useSelector((state) => state.auth)
+	// const dispatch = useDispatch()
+
+	// const getFirms = async () => {
+	//   dispatch(fetchStart())
+	//   try {
+	//     const { data } = await axios(
+	//       `${import.meta.env.VITE_BASE_URL}/stock/firms/`,
+	//       {
+	//         headers: { Authorization: `Token ${token}` },
+	//       }
+	//     )
+	//     dispatch(getFirmsSuccess(data))
+	//     console.log(data)
+	//   } catch (error) {
+	//     dispatch(fetchFail())
+	//     console.log(error)
+	//   }
+	// }
+
 	const { getStockData } = useStockCall();
 	const { firms } = useSelector((state) => state.stock);
 
@@ -26,8 +49,8 @@ const Firms = () => {
 	};
 
 	useEffect(() => {
+		// getFirms()
 		getStockData("firms");
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

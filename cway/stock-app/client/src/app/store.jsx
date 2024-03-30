@@ -1,8 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import authReducer from "../features/authSlice";
 import stockReducer from "../features/stockSlice";
+
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage/session";
+import storage from "redux-persist/lib/storage/session"; //? default : localStorage
 
 const persistConfig = {
 	key: "root",
@@ -17,11 +18,9 @@ const store = configureStore({
 		stock: stockReducer,
 	},
 	devTools: process.env.NODE_ENV !== "production",
-	// middleware alanını özelleştirmek için bir callback fonksiyonu kullanın
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({
-			serializableCheck: false,
-		}),
+	middleware: getDefaultMiddleware({
+		serializableCheck: false,
+	}),
 });
 
 export const persistor = persistStore(store);

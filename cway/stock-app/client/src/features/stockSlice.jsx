@@ -23,6 +23,7 @@ const stockSlice = createSlice({
 			state[payload.url] = payload.data;
 		},
 
+		// ? Products, categories ve brands state'lerini güncelleyen action fonks.
 		getProdCatBrandsSuccess: (state, { payload }) => {
 			state.loading = false;
 			state.products = payload[0];

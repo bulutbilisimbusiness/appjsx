@@ -13,7 +13,11 @@ import {
 const useAuthCall = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
 	const login = async (userData) => {
+		// console.log(import.meta.env.VITE_API_KEY)
+		// console.log(import.meta.env.VITE_API_KEY_PROD)
+
 		dispatch(fetchStart());
 		try {
 			const { data } = await axios.post(
@@ -21,31 +25,29 @@ const useAuthCall = () => {
 				userData
 			);
 			dispatch(loginSuccess(data));
-			console.log(data);
-			toastSuccessNotify("Login islemi basarili");
+			toastSuccessNotify("login islemi basarili");
 			navigate("/stock");
 		} catch (error) {
-			console.log(error);
-
+			console.log(error.message);
 			dispatch(fetchFail());
-			toastErrorNotify("Login işlemi başarısız");
+			toastErrorNotify(error.response.data.non_field_errors[0]);
 		}
 	};
+
 	const logout = async () => {
 		dispatch(fetchStart());
 		try {
 			await axios.post(`${import.meta.env.VITE_BASE_URL}/account/auth/logout/`);
 			dispatch(logoutSuccess());
-
-			toastSuccessNotify("Logout islemi basarili");
+			toastSuccessNotify("logout islemi basarili");
 			navigate("/");
 		} catch (error) {
 			console.log(error);
-
 			dispatch(fetchFail());
-			toastErrorNotify(error.response.data.non_field_errors[0]);
+			toastErrorNotify("Logout islemi basarisiz");
 		}
 	};
+
 	const register = async (userData) => {
 		dispatch(fetchStart());
 		try {
@@ -54,16 +56,15 @@ const useAuthCall = () => {
 				userData
 			);
 			dispatch(registerSuccess(data));
-
-			toastSuccessNotify("Kayit islemi basarili");
+			toastSuccessNotify("kayit islemi basarili");
 			navigate("/stock");
 		} catch (error) {
 			console.log(error);
-
 			dispatch(fetchFail());
-			toastErrorNotify("Kayıt işlemi başarısız olmuştur");
+			toastErrorNotify("Kayit islemi basarisiz olmustur.");
 		}
 	};
+
 	return { login, logout, register };
 };
 

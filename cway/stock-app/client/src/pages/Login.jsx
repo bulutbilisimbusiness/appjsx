@@ -7,26 +7,30 @@ import image from "../assets/result.svg";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { Formik, Form } from "formik";
 import { object, string } from "yup";
+// import { login } from "../hooks/useAuthCall"
 import useAuthCall from "../hooks/useAuthCall";
+
 const Login = () => {
-	// eslint-disable-next-line no-unused-vars
 	const { login } = useAuthCall();
 
+	//? harici validasyon şemasi
 	const loginSchema = object({
 		email: string()
-			.email("Lütfen geçerli bir email giriniz")
+			.email("Lutfen valid bir email giriniz")
 			.required("Bu alan zorunludur"),
 		password: string()
 			.required("Bu alan zorunludur")
 			.min(8, "En az 8 karakter girilmelidir")
-			.matches(/\d+/, "En az bir rakam içermelidir")
-			.matches(/[a-z]/, "En az bir küçük harf içermelidir")
-			.matches(/[A-Z]/, "En az bir büyük harf içermelidir")
-			.matches(/[!,?{}><%&$#€+-]/, "En az bir özel karakter içermelidir"),
+			.max(16, "En fazla 16 karakter girilmelidir")
+			.matches(/\d+/, "En az bir rakam içermelidir.")
+			.matches(/[a-z]/, "En az bir küçük harf içermelidir.")
+			.matches(/[A-Z]/, "En az bir büyük harf içermelidir.")
+			.matches(/[!,?{}><%&$#£+-.]+/, "En az bir özel karekter içermelidir."),
 	});
+
 	return (
 		<Container maxWidth="lg">
 			<Grid
@@ -63,13 +67,14 @@ const Login = () => {
 					>
 						Login
 					</Typography>
+
 					<Formik
 						initialValues={{ email: "", password: "" }}
 						validationSchema={loginSchema}
-						onSubmit={(values, actions) => {
+						onSubmit={(values, action) => {
 							login(values);
-							actions.resetForm();
-							actions.setSubmitting(false);
+							action.resetForm();
+							action.setSubmitting(false);
 						}}
 					>
 						{({ handleChange, handleBlur, values, touched, errors }) => (
@@ -108,7 +113,7 @@ const Login = () => {
 					</Formik>
 
 					<Box sx={{ textAlign: "center", mt: 2 }}>
-						<Link to="/register">Do you have not an account?</Link>
+						<Link to="/register">Don&apos;t you have an account?</Link>
 					</Box>
 				</Grid>
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -19,7 +20,6 @@ const drawerWidth = 200;
 
 function Dashboard(props) {
 	const { logout } = useAuthCall();
-	// eslint-disable-next-line react/prop-types
 	const { window } = props;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 

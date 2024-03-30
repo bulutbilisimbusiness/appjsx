@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
@@ -5,7 +7,7 @@ import useStockCall from "../hooks/useStockCall";
 import { btnStyle } from "../styles/globalStyles";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
-import PropTypes from "prop-types";
+
 export default function SaleTable({ handleOpen, setInfo }) {
 	const { sales } = useSelector((state) => state.stock);
 	const { deleteStockData } = useStockCall();
@@ -22,6 +24,7 @@ export default function SaleTable({ handleOpen, setInfo }) {
 
 		{
 			field: "brand",
+			valueGetter: (params) => params.row.brand_id?.name,
 			headerName: "Brand",
 			flex: 1,
 			minWidth: 100,
@@ -30,6 +33,7 @@ export default function SaleTable({ handleOpen, setInfo }) {
 		},
 		{
 			field: "product",
+			valueGetter: (params) => params.row.product_id?.name,
 			headerName: "Product",
 			flex: 1,
 			minWidth: 100,
@@ -108,16 +112,3 @@ export default function SaleTable({ handleOpen, setInfo }) {
 		</Box>
 	);
 }
-SaleTable.propTypes = {
-	open: PropTypes.bool.isRequired,
-	handleClose: PropTypes.func.isRequired,
-	info: PropTypes.shape({
-		brand_id: PropTypes.string,
-		product_id: PropTypes.string,
-		quantity: PropTypes.string,
-		price: PropTypes.string,
-		id: PropTypes.string, // Eğer id de kullanılıyorsa
-	}).isRequired,
-	setInfo: PropTypes.func.isRequired,
-	handleOpen: PropTypes.func.isRequired,
-};

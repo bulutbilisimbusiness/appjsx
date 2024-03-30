@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
@@ -8,37 +10,37 @@ import useStockCall from "../hooks/useStockCall";
 export default function ProductTable() {
 	const { products } = useSelector((state) => state.stock);
 	const { deleteStockData } = useStockCall();
+
 	const columns = [
 		{
 			field: "id",
 			headerName: "#",
-			width: 90,
 			headerAlign: "center",
-			flex: 0.5,
 			align: "center",
+			flex: 0.5,
 		},
-
 		{
 			field: "category",
-			valueGetter: (params) => params?.row?.category_id?.name || "",
+			valueGetter: (params) => params.row.category_id?.name,
 			headerName: "Category",
 			flex: 2,
 			headerAlign: "center",
 			align: "center",
+			minWidth: 80,
 		},
 		{
 			field: "brand",
+			valueGetter: (params) => params.row.brand_id?.name,
 			headerName: "Brand",
-			valueGetter: (params) => params?.row?.brand_id?.name || "",
-			headerAlign: "center",
 			flex: 2,
+			headerAlign: "center",
 			align: "center",
 		},
 		{
 			field: "name",
 			headerName: "Name",
-			headerAlign: "center",
 			flex: 1,
+			headerAlign: "center",
 			align: "center",
 		},
 		{
@@ -50,23 +52,26 @@ export default function ProductTable() {
 			align: "center",
 		},
 		{
-			field: "action",
-			headerName: "Actions",
+			field: "actions",
 			type: "actions",
+			headerName: "Actions",
 			flex: 1,
 			headerAlign: "center",
 			align: "center",
-			getActions: (params) => [
+			getActions: (props) => [
 				<GridActionsCellItem
-					key={params.id}
+					key={props.id}
 					icon={<DeleteForeverIcon />}
 					label="Delete"
 					sx={btnStyle}
-					onClick={() => deleteStockData("products", params.id)}
+					onClick={() => deleteStockData("products", props.id)}
 				/>,
 			],
 		},
 	];
+
+	//? api'Den gelmeyen colum bilgileri icin getActions veya renderCell islevleri kullanilabilir.
+	//? bu islevler aslinda isimsiz bir fonksiyon cagirirlar ve bu fonksiyon aldigi parametre (params) ile bir cok veriye (rows,columns gibi) erisebilir.
 
 	return (
 		<Box sx={{ width: "100%", mt: 4 }}>
@@ -74,7 +79,7 @@ export default function ProductTable() {
 				autoHeight
 				rows={products}
 				columns={columns}
-				pageSizeOptions={[20, 50, 75, 100]}
+				pageSizeOptions={[20, 50, 75, 100]} //? sayfa basina satir sayisi
 				disableRowSelectionOnClick
 				slots={{ toolbar: GridToolbar }}
 			/>

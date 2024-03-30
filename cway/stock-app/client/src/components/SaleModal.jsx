@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -10,15 +12,14 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 export default function SaleModal({ open, handleClose, info, setInfo }) {
-	const navigate = useNavigate();
 	const { postStockData, putStockData } = useStockCall();
 	const { products, brands } = useSelector((state) => state.stock);
-
+	const navigate = useNavigate();
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setInfo({ ...info, [name]: Number(value) });
+		// setInfo({ ...info, [name]: Number(value) })
+		setInfo({ ...info, [name]: value });
 	};
 
 	const handleSubmit = (e) => {
@@ -131,15 +132,3 @@ export default function SaleModal({ open, handleClose, info, setInfo }) {
 		</div>
 	);
 }
-SaleModal.propTypes = {
-	open: PropTypes.bool.isRequired,
-	handleClose: PropTypes.func.isRequired,
-	info: PropTypes.shape({
-		brand_id: PropTypes.string,
-		product_id: PropTypes.string,
-		quantity: PropTypes.string,
-		price: PropTypes.string,
-		id: PropTypes.string, // Eğer id de kullanılıyorsa
-	}).isRequired,
-	setInfo: PropTypes.func.isRequired,
-};

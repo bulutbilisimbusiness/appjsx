@@ -9,8 +9,10 @@ import { Link } from "react-router-dom";
 import RegisterForm, { registerSchema } from "../components/RegisterForm";
 import { Formik } from "formik";
 import useAuthCall from "../hooks/useAuthCall";
+
 const Register = () => {
 	const { register } = useAuthCall();
+
 	return (
 		<Container maxWidth="lg">
 			<Grid

@@ -1,20 +1,21 @@
-import { Grid } from "@mui/material";
-import { Card, LineChart, Title } from "@tremor/react";
+import { Card, Title, LineChart } from "@tremor/react";
 import { useSelector } from "react-redux";
+import Grid from "@mui/material/Grid";
 
 const dataFormatter = (number) =>
-	`$${Intl.NumberFormat("us").format(number).toString()}`;
+	`${Intl.NumberFormat("us").format(number).toString()}`;
 
 const Charts = () => {
 	const { sales, purchases } = useSelector((state) => state.stock);
+
 	const salesData = sales?.map((item) => ({
 		date: item.createds,
 		quantity: item.quantity,
 		price: Number(item.price_total),
 	}));
+
 	const purchasesData = purchases?.map((item) => ({
 		date: item.createds,
-
 		price: Number(item.price_total),
 	}));
 
@@ -33,6 +34,7 @@ const Charts = () => {
 					/>
 				</Card>
 			</Grid>
+
 			<Grid item xs={12} md={6}>
 				<Card>
 					<Title>Total Purchases</Title>

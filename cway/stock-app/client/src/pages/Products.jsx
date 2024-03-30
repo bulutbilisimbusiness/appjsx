@@ -1,21 +1,27 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
+import { useSelector } from "react-redux";
 import useStockCall from "../hooks/useStockCall";
 import ProductModal from "../components/ProductModal";
 import ProductTable from "../components/ProductTable";
 
 const Products = () => {
-	const { getProdCatBrands } = useStockCall();
+	const { getStockData, getProdCatBrands } = useStockCall();
+	const { products } = useSelector((state) => state.stock);
 
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 
 	useEffect(() => {
+		// getStockData("products")
+		// getStockData("categori")
+		// getStockData("brands")
+
+		//! Promise.all ile es zamanli istek atilan fonks.
 		getProdCatBrands();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
